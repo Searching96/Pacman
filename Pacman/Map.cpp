@@ -35,3 +35,7 @@ void Map::drawTile(SDL_Renderer* rd, int x, int y, int type) {
 	SDL_SetRenderDrawColor(rd, 0x00, 0x00, 0x00, 0xFF);
 	SDL_RenderDrawRect(rd, &tileRect);
 }
+
+vector<vector<int>> Map::getMap() {
+	return map;
+}

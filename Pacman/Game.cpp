@@ -10,7 +10,7 @@ bool Game::init() {
 		return false;
 	}
 
-	wd = SDL_CreateWindow("Pacman", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 420, 460, SDL_WINDOW_SHOWN);
+	wd = SDL_CreateWindow("Pacman", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, MAP_WIDTH, MAP_HEIGHT, SDL_WINDOW_SHOWN);
 	if (wd == NULL) {
 		cerr << "Window could not be created! SDL_Error: " << SDL_GetError() << endl;
 		return false;
@@ -22,7 +22,7 @@ bool Game::init() {
 		return false;
 	}
 
-	pm = new Pacman(50, 50, 20, 20, 5);
+	pm = new Pacman(20, 20, 20, 20, 0.05f);
 	map = new Map();
 	vector<vector<int>> _map = {
 		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -75,12 +75,12 @@ void Game::handleEvents() {
 		if (ev.type == SDL_QUIT) {
 			quit = true;
 		}
-		pm->move(ev);
+		pm->handleEvent(ev);
 	}
 }
 
 void Game::update() {
-	// Update game state
+	pm->move(map->getMap());
 }
 
 void Game::render() {

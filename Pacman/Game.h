@@ -2,6 +2,7 @@
 #include <SDL.h>
 #include "Pacman.h"
 #include "Map.h"
+#include "Const.h"
 
 class Game {
 private:
