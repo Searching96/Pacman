@@ -1,7 +1,9 @@
 #pragma once
 #include <SDL.h>
 #include "Pacman.h"
+#include "Ghost.h"
 #include "Map.h"
+#include "Const.h"
 
 class Game {
 private:
@@ -9,6 +11,7 @@ private:
 	SDL_Renderer* rd;
 	bool quit;
 	Pacman* pm;
+	vector<Ghost*> ghosts;
 	Map* map;
 
 	void handleEvents();

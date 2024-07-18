@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "Const.h"
 #include <iostream>
 using namespace std;
 
@@ -9,8 +10,8 @@ bool Game::init() {
 		cerr << "SDL could not initialize! SDL_Error: " << SDL_GetError() << endl;
 		return false;
 	}
-
-	wd = SDL_CreateWindow("Pacman", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 420, 460, SDL_WINDOW_SHOWN);
+	
+	wd = SDL_CreateWindow("Pacman", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, MAP_WIDTH, MAP_HEIGHT, SDL_WINDOW_SHOWN);
 	if (wd == NULL) {
 		cerr << "Window could not be created! SDL_Error: " << SDL_GetError() << endl;
 		return false;
@@ -22,34 +23,14 @@ bool Game::init() {
 		return false;
 	}
 
-	pm = new Pacman(50, 50, 20, 20, 5);
+	const float SPEED = 0.050f;
+	pm = new Pacman(20, 20, 20, 20, SPEED);
+	ghosts.push_back(new Ghost(20, 60, 20, 20, 0.35f * SPEED));
+	ghosts.push_back(new Ghost(80, 20, 20, 20, 0.30f * SPEED));
+	ghosts.push_back(new Ghost(100, 100, 20, 20, 0.25f * SPEED));
+	ghosts.push_back(new Ghost(200, 200, 20, 20, 0.20f * SPEED));
 	map = new Map();
-	vector<vector<int>> _map = {
-		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1},
-		{1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1},
-		{1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1},
-		{1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1},
-		{0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0},
-		{1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1},
-		{0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-		{1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1},
-		{0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0},
-		{0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0},
-		{1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1},
-		{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1},
-		{1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1},
-		{1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1},
-		{1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-	};
-	map->loadMap(_map);
+	map->loadMap(MAP);
 	return true;
 }
 
@@ -64,6 +45,8 @@ void Game::run() {
 void Game::close() {
 	delete pm;
 	delete map;
+	for (auto ghost : ghosts)
+		delete ghost;
 	SDL_DestroyRenderer(rd);
 	SDL_DestroyWindow(wd);
 	SDL_Quit();
@@ -75,12 +58,14 @@ void Game::handleEvents() {
 		if (ev.type == SDL_QUIT) {
 			quit = true;
 		}
-		pm->move(ev);
+		pm->handleEvent(ev);
 	}
 }
 
 void Game::update() {
-	// Update game state
+	pm->move(map->getMap());
+	for (auto ghost : ghosts)
+		ghost->chasePacman(pm, map->getMap());
 }
 
 void Game::render() {
@@ -88,5 +73,7 @@ void Game::render() {
 	SDL_RenderClear(rd);
 	map->render(rd);
 	pm->render(rd);
+	for (auto ghost : ghosts)
+		ghost->render(rd);
 	SDL_RenderPresent(rd);
 }
