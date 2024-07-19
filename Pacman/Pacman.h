@@ -1,14 +1,27 @@
 #pragma once
-
 #include <SDL.h>
+#include <vector>
+#include "Const.h"
+#include "Pellet.h"
+
+using namespace std;
 
 class Pacman {
 private:
-	int x, y;
-	int w, h;
-	int speed;
+	SDL_Rect pmRect;
+	float speed;
+	int dirX, dirY;
+	float posX, posY;
+	int tempDirX, tempDirY;
 public:
-	Pacman(int _x, int _y, int _w, int _h, int _speed);
-	void move(SDL_Event& ev);
+	Pacman(int _x, int _y, int _w, int _h, float _speed);
+	void handleEvent(SDL_Event& ev);
+	void move(const vector<vector<int>>& map, vector<Pellet>& pellets);
 	void render(SDL_Renderer* rd);
+	bool isValidMove(float newX, float newY, const vector<vector<int>>& map);
+	void wrapAround(float& x, float& y);
+	float getPosX();
+	float getPosY();
+	void checkPelletCollision(vector<Pellet>& pellets);
+	SDL_Rect getRect();
 };

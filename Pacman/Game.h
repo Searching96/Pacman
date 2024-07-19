@@ -1,7 +1,12 @@
 #pragma once
 #include <SDL.h>
+#include <string>
 #include "Pacman.h"
+#include "Ghost.h"
 #include "Map.h"
+#include "Const.h"
+#include "Pellet.h"
+#include "SDL_ttf.h"
 
 class Game {
 private:
@@ -9,7 +14,12 @@ private:
 	SDL_Renderer* rd;
 	bool quit;
 	Pacman* pm;
+	vector<Ghost*> ghosts;
+	vector<Pellet> pellets;
 	Map* map;
+	int lives;
+	unsigned int protectionTime;
+	bool gameOver;
 
 	void handleEvents();
 	void update();
@@ -19,5 +29,8 @@ public:
 	bool init();
 	void run();
 	void close();
+	bool checkWin();
+	void renderText(const string& message, int x, int y, SDL_Color color);
+	void checkGhostCollision();
+	void DrawProtectionSphere();
 };
-
