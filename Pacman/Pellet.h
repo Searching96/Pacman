@@ -1,18 +1,19 @@
 #pragma once
 #include <SDL.h>
-#include <vector>
 #include "Const.h"
 #include "Draw.h"
 
 using namespace std;
 
-class Map
-{
+class Pellet {
 private:
-	vector<vector<int>> map;
+	float posX, posY;
+	SDL_Rect pelletRect;
 public:
-	Map();
-	void loadMap(const vector<vector<int>>& _map);
+	Pellet(float _posX, float _posY);
+	float getX();
+	float getY();
+	SDL_Rect getRect();
 	void render(SDL_Renderer* rd);
-	vector<vector<int>> getMap();
 };
+
